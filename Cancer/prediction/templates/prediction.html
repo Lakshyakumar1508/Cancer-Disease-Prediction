@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cancer Risk Prediction</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: azure;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: linear-gradient(to right, #7e4c4c, #905050);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+      border-bottom: 4px solid #d48c00;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .header h1 {
+      font-size: 40px;
+      margin: 0 0 10px;
+    }
+
+    .header p {
+      font-size: 18px;
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      width: 450px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      background: #f9f9f9;
+      transition: all 0.3s;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus, select:focus {
+      border-color: #d48c00;
+      box-shadow: 0 0 8px rgba(212, 140, 0, 0.5);
+    }
+
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .buttons button {
+      background-color: #623a3a;
+      color: white;
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+    }
+
+    .buttons button:hover {
+      background-color: #4e2d2d;
+      transform: scale(1.05);
+    }
+
+    .form-step {
+      display: none;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    input[type="submit"] {
+      background-color: #623a3a;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease-in-out;
+      margin-top: 20px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #4e2d2d;
+      transform: scale(1.05);
+    }
+
+    .row {
+      text-align: center;
+      font-size: 20px;
+      color: #333;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+
+
+
+    .footer {
+      text-align: center;
+      padding: 20px 10px;
+      background: #eee;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .footer a {
+      text-decoration: none;
+      color: #623a3a;
+      font-weight: bold;
+    }
+
+    .benefits {
+  background: #f5f5f5;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.benefits h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-decoration: underline;
+  color: #333;
+}
+
+.benefits ul {
+  list-style: none;
+  padding: 0;
+  max-width: 800px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.benefits li {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  color: #444;
+  transition: all 0.3s ease;
+}
+
+.benefits li:hover {
+  background-color: #fffdf8;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+  border-left: 4px solid #d48c00;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Cancer Risk Prediction Tool</h1>
+    <p>Your personal AI-based health assistant</p>
+  </div>
+
+  <main>
+    <div class="container">
+      <h2>Cancer Risk Prediction</h2>
+      <form action="/predict/result/" method="get" id="multiStepForm">
+        <!-- Step 1 -->
+        <div class="form-step active">
+          <div class="form-group">
+            <label>Age</label>
+            <input type="text" name="n1" placeholder="Enter age">
+          </div>
+          <div class="form-group">
+            <label>Gender</label>
+            <select name="n2">
+              <option value="0">Male</option>
+              <option value="1">Female</option>
+            </select>
+          </div>
+          <div class="buttons">
+            <span></span>
+            <button type="button" onclick="nextStep()">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="form-step">
+          <div class="form-group">
+            <label>BMI</label>
+            <input type="text" name="n3" placeholder="Enter BMI">
+          </div>
+          <div class="form-group">
+            <label>Smoking</label>
+            <select name="n4">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+          <div class="buttons">
+            <button type="button" onclick="prevStep()">Previous</button>
+            <button type="button" onclick="nextStep()">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="form-step">
+          <div class="form-group">
+            <label>Genetic Risk</label>
+            <input type="text" name="n5" placeholder="Enter risk level (1-10)">
+          </div>
+          <div class="form-group">
+            <label>Physical Activity</label>
+            <input type="text" name="n6" placeholder="Hours per week">
+          </div>
+          <div class="buttons">
+            <button type="button" onclick="prevStep()">Previous</button>
+            <button type="button" onclick="nextStep()">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="form-step">
+          <div class="form-group">
+            <label>Alcohol Intake</label>
+            <select name="n7">
+              <option value="0">No</option>
+              <option value="1">Occasionally</option>
+              <option value="2">Regularly</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Cancer History</label>
+            <select name="n8">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+          <div class="buttons">
+            <button type="button" onclick="prevStep()">Previous</button>
+          </div>
+          <input type="submit" value="Predict">
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <h2>{{ result2 }}</h2>
+    </div>
+
+
+    <section class="benefits">
+        <h3>Why Use This Tool?</h3>
+        <ul>
+          <li>Quick & easy health risk assessment</li>
+          <li>No personal data stored</li>
+          <li>Science-backed prediction model</li>
+          <li>Helpful for preventive healthcare</li>
+          <li>Secure & private</li>
+          <li>Built by students for awareness</li>
+        </ul>
+      </section>
+  </main>
+
+  <div class="footer">
+    Developed by <a href="#">Lakshya Kumar</a> | &copy; 2025 Cancer Prediction Inc.
+  </div>
+
+  <script>
+    let currentStep = 0;
+    const steps = document.querySelectorAll('.form-step');
+
+    function showStep(index) {
+      steps.forEach((step, i) => {
+        step.classList.toggle('active', i === index);
+      });
+    }
+
+    function nextStep() {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
+  </script>
+
+</body>
+</html>
